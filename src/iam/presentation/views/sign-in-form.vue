@@ -53,11 +53,8 @@
         <button @click="enterAsVisitor('visitor')" class="btn-visitor">
           👤 Visitante
         </button>
-        <button @click="enterAsVisitor('private')" class="btn-visitor private">
-          🏛️ Museo Privado
-        </button>
-        <button @click="enterAsVisitor('public')" class="btn-visitor public">
-          🌍 Museo Público
+        <button @click="enterAsVisitor('museum')" class="btn-visitor private">
+          🏛️ Gestor
         </button>
       </div>
     </div>
@@ -86,10 +83,8 @@ const handleLogin = async () => {
 
 const enterAsVisitor = async (type) => {
   iamStore.setVisitorMode(type)
-  if (type === 'private') {
-    router.push('/dashboard-privado')
-  } else if (type === 'public') {
-    router.push('/dashboard-publico')
+  if (type === 'museum') {
+    router.push('/dashboard-museum')
   } else {
     router.push('/dashboard')
   }

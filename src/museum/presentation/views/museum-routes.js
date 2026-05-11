@@ -1,5 +1,5 @@
 import PrivateDashboard from './dashboard.vue'
 
 export default [
-    { path: '/dashboard-privado', component: PrivateDashboard }
+    { path: '/dashboard-museum', component: PrivateDashboard }
 ]

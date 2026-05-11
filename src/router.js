@@ -3,14 +3,12 @@
 // Importar rutas de módulos
 import iamRoutes from './iam/presentation/views/iam-routes'
 import visitorRoutes from './visitor/presentation/views/visitor-routes'
-import privateRoutes from './private/presentation/views/private-routes'
-import publicRoutes from './public/presentation/views/public-routes'
+import museumRoutes from "./museum/presentation/views/museum-routes.js";
 
 const routes = [
     ...iamRoutes,
     ...visitorRoutes,
-    ...privateRoutes,
-    ...publicRoutes,
+    ...museumRoutes,
     { path: '/:pathMatch(.*)*', redirect: '/sign-in' }
 ]
 

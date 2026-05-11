@@ -70,7 +70,7 @@ const sidebarCollapsed = ref(false)
 const userName = computed(() => iamStore.user?.name || 'Usuario')
 const userRole = computed(() => {
   const role = iamStore.user?.type
-  if (role === 'private') return 'Administrador'
+  if (role === 'museum') return 'Administrador'
   if (role === 'public') return 'Gestor de Aforo'
   return 'Visitante'
 })
