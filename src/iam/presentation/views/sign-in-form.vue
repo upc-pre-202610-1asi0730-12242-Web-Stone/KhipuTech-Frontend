@@ -63,7 +63,7 @@
     </div>
 
     <div class="login-footer">
-      <p>© 2025 KhipuTech - Todos los derechos reservados</p>
+      <p>© 2026 KhipuTech - Todos los derechos reservados</p>
     </div>
   </div>
 </template>
