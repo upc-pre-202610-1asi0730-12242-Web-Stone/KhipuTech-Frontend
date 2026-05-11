@@ -95,11 +95,11 @@ const stats = ref({
 })
 
 const obrasMasVisitadas = ref([
-  { id: 1, nombre: 'La persistencia de la memoria', sala: 'Sala 2', visitas: 342, retencion: 78, estado: 'abierto' },
-  { id: 2, nombre: 'La noche estrellada', sala: 'Sala 1', visitas: 298, retencion: 65, estado: 'abierto' },
-  { id: 3, nombre: 'El grito', sala: 'Sala 1', visitas: 256, retencion: 54, estado: 'mantenimiento' },
-  { id: 4, nombre: 'Guernica', sala: 'Sala 3', visitas: 187, retencion: 82, estado: 'abierto' },
-  { id: 5, nombre: 'El beso', sala: 'Sala 2', visitas: 165, retencion: 71, estado: 'abierto' }
+  { id: 1, nombre: 'Los funerales de Atahualpa', sala: 'Sala 2', visitas: 342, retencion: 78, estado: 'abierto' },
+  { id: 2, nombre: 'Pucahuamani', sala: 'Sala 1', visitas: 298, retencion: 65, estado: 'abierto' },
+  { id: 3, nombre: 'La captura del abigeo', sala: 'Sala 1', visitas: 256, retencion: 54, estado: 'mantenimiento' },
+  { id: 4, nombre: 'Los viajantes 2', sala: 'Sala 3', visitas: 187, retencion: 82, estado: 'abierto' },
+  { id: 5, nombre: 'Simón Bolívar', sala: 'Sala 2', visitas: 165, retencion: 71, estado: 'abierto' }
 ])
 
 const visitsByHour = ref([12, 8, 5, 7, 15, 28, 45, 62, 58, 42, 35, 48, 72, 85, 68, 54, 38, 25, 18, 12, 8, 6, 4, 3])
@@ -113,11 +113,11 @@ const rankingPeriods = ref(['Hoy', 'Esta semana', 'Este mes'])
 const currentRankingPeriod = ref('Esta semana')
 
 const rankingObras = ref([
-  { id: 1, nombre: 'La persistencia de la memoria', sala: 'Sala 2', artista: 'Salvador Dalí', engagement: 98, tiempoPromedio: 4.2, trend: 'up' },
-  { id: 2, nombre: 'La noche estrellada', sala: 'Sala 1', artista: 'Van Gogh', engagement: 92, tiempoPromedio: 3.8, trend: 'up' },
-  { id: 3, nombre: 'El beso', sala: 'Sala 2', artista: 'Gustav Klimt', engagement: 87, tiempoPromedio: 3.5, trend: 'down' },
-  { id: 4, nombre: 'Guernica', sala: 'Sala 3', artista: 'Picasso', engagement: 81, tiempoPromedio: 4.5, trend: 'down' },
-  { id: 5, nombre: 'El pensador', sala: 'Sala 3', artista: 'Rodin', engagement: 76, tiempoPromedio: 3.2, trend: 'up' }
+  { id: 1, nombre: 'Los funerales de Atahualpa', sala: 'Sala 2', artista: 'Luis Montero', engagement: 98, tiempoPromedio: 4.2, trend: 'up' },
+  { id: 2, nombre: 'Simón Bolívar', sala: 'Sala 1', artista: 'José Gil de Castro', engagement: 92, tiempoPromedio: 3.8, trend: 'up' },
+  { id: 3, nombre: 'La captura del abigeo', sala: 'Sala 2', artista: 'Mario Urteaga', engagement: 87, tiempoPromedio: 3.5, trend: 'down' },
+  { id: 4, nombre: 'Los viajantes 2', sala: 'Sala 3', artista: 'Tilsa Tsuchiya', engagement: 81, tiempoPromedio: 4.5, trend: 'down' },
+  { id: 5, nombre: 'Pucahuamani', sala: 'Sala 3', artista: 'Fernando de Szyszlo', engagement: 76, tiempoPromedio: 3.2, trend: 'up' }
 ])
 
 // ========== SPONSORS ==========
