@@ -1,9 +1,251 @@
 {
-"option": {
-"dashboard": "Dashboard",
-"ranking-of-works": "Ranking of works",
-"sponsors": "Sponsors",
-"visitor-capacity-control": "Visitor capacity control",
-"warnings": "Warnings"
-}
+  "app": {
+    "name": "KhipuTech",
+    "subtitle": "Contemporary Art Museum",
+    "footer": "© 2026 KhipuTech - All rights reserved"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "ranking": "Artwork Ranking",
+    "sponsors": "Sponsors",
+    "aforo": "Capacity Control",
+    "alertas": "Alerts",
+    "defensaCivil": "Civil Defense",
+    "scan": "Scan QR/NFC",
+    "detail": "Artwork Detail",
+    "map": "Tour Map",
+    "achievements": "Achievements & XP"
+  },
+  "auth": {
+    "email": "Email Address",
+    "emailPlaceholder": "user{'@'}example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "login": "Sign In",
+    "orAccessAs": "or access as",
+    "visitor": "👤 Visitor",
+    "manager": "🏛️ Manager"
+  },
+  "layout": {
+    "logout": "Logout",
+    "roleAdmin": "Administrator",
+    "roleManager": "Capacity Manager",
+    "roleVisitor": "Visitor"
+  },
+  "museum": {
+    "stats": {
+      "visitorsToday": "Visitors Today",
+      "artworksScanned": "Artworks Scanned",
+      "avgDuration": "Avg Duration",
+      "nps": "NPS"
+    },
+    "topArtworks": {
+      "title": "Most Visited Artworks",
+      "colArtwork": "ARTWORK",
+      "colRoom": "ROOM",
+      "colVisits": "VISITS",
+      "colRetention": "% RETENTION",
+      "colStatus": "STATUS",
+      "statusOpen": "🟢 Open",
+      "statusMaintenance": "🟡 Maintenance",
+      "statusClosed": "🔴 Closed"
+    },
+    "visitsChart": {
+      "title": "Visits per Hour",
+      "excel": "📊 Excel",
+      "pdf": "📄 PDF",
+      "peakLabel": "Peak:",
+      "avgLabel": "Avg per hour:",
+      "visits": "visits",
+      "yAxisLabel": "Number of visits",
+      "datasetLabel": "Visits per hour"
+    },
+    "ranking": {
+      "title": "Artwork Ranking by Engagement",
+      "pts": "pts"
+    },
+    "sponsors": {
+      "title": "Sponsors Table",
+      "monthlyRevenue": "Monthly Revenue",
+      "activeSponsors": "Active Sponsors",
+      "totalImpressions": "Impressions",
+      "colSponsor": "SPONSOR",
+      "colRoom": "SPONSORED ROOM",
+      "colImpressions": "IMPRESSIONS",
+      "colContributed": "$ CONTRIBUTED",
+      "colStatus": "STATUS",
+      "addSponsor": "+ Add Sponsor",
+      "exportPdf": "📄 Export PDF",
+      "statusActive": "✅ Active",
+      "statusInactive": "⏸️ Inactive"
+    },
+    "capacity": {
+      "title": "Room Capacity",
+      "totalInMuseum": "TOTAL IN MUSEUM",
+      "criticalRooms": "CRITICAL ROOMS",
+      "totalCapacity": "TOTAL CAPACITY",
+      "todayEntries": "TODAY'S ENTRIES",
+      "colRoom": "ROOM",
+      "colCurrent": "CURRENT",
+      "colCapacity": "CAPACITY",
+      "colOccupancy": "OCCUPANCY",
+      "colStatus": "STATUS",
+      "statusNormal": "Normal",
+      "statusWarning": "Warning",
+      "statusCritical": "Critical",
+      "statusExceeded": "Exceeded"
+    },
+    "map": {
+      "title": "Room Maps – Visual Layout",
+      "saveConfig": "💾 Save Config",
+      "exportPdf": "📄 Export PDF",
+      "exportExcel": "📊 Export Excel"
+    },
+    "alerts": {
+      "activeTitle": "Active Alerts",
+      "noAlerts": "✅ No active alerts – All rooms are in normal state",
+      "configTitle": "Configure Notifications",
+      "thresholdModerate": "Moderate alert threshold (Yellow)",
+      "thresholdCritical": "Critical alert threshold (Orange)",
+      "occupancy": "% occupancy",
+      "notifyVia": "Notify via",
+      "emailChannel": "Email",
+      "whatsapp": "WhatsApp",
+      "sms": "SMS",
+      "panel": "Control Panel",
+      "civilContact": "Civil Defense Contact",
+      "phonePlaceholder": "Phone number",
+      "saveConfig": "💾 Save configuration"
+    },
+    "sensors": {
+      "title": "Sensor Status",
+      "connected": "Connected",
+      "disconnected": "Disconnected"
+    },
+    "evacuation": {
+      "title": "Evacuation Protocol",
+      "activateAlert": "🚨 Activate General Alert",
+      "callCivil": "📞 Call Civil Defense",
+      "viewProtocol": "📄 View Protocol"
+    },
+    "report": {
+      "title": "Report for Authorities",
+      "description": "Generate an updated museum status report to send to Civil Defense",
+      "sendBtn": "📨 Send to Civil Defense"
+    }
+  },
+  "visitor": {
+    "scan": {
+      "title": "📱 Scan QR / NFC",
+      "subtitle": "Place the QR code in front of the camera",
+      "qrTitle": "QR Scanned",
+      "verifyTitle": "Verify QR Code",
+      "manualOr": "Or enter the code manually",
+      "codePlaceholder": "ARTWORK CODE (e.g.: KH-2025-001)",
+      "searchBtn": "🔍 Search",
+      "simulateValid": "Simulate Valid QR",
+      "simulateInvalid": "Simulate Invalid QR",
+      "simulateBlurred": "Simulate Poor Focus",
+      "waiting": "Waiting for scan...",
+      "waitingCode": "Waiting for QR code..."
+    },
+    "artwork": {
+      "description": "📖 Description",
+      "audioGuide": "Audio Guide",
+      "audioTitle": "Artwork Explanation",
+      "transcript": "📝 Transcript",
+      "showTranscript": "Show transcript",
+      "hideTranscript": "Hide transcript",
+      "location": "Location in Museum",
+      "floor": "Floor",
+      "room": "Room",
+      "artworkCode": "Artwork Code",
+      "navigateBtn": "🗺️ Go to this room",
+      "relatedWorks": "Related Works",
+      "scanAnother": "Scan Another Artwork",
+      "viewRelated": "View",
+      "defaultStyle": "Surrealism",
+      "defaultDescription": "This masterpiece represents a unique fusion between traditional art and new technologies.",
+      "defaultLocation": "Room 2 – Contemporary Art",
+      "defaultFloor": "2nd Floor",
+      "defaultRoom": "Contemporary Art Room",
+      "emptyTitle": "No artwork selected",
+      "emptyDesc": "Scan a QR code or search for an artwork manually to see its details"
+    },
+    "map": {
+      "explorationTitle": "Your Exploration Progress",
+      "roomsExplored": "Rooms explored",
+      "museumCompleted": "Museum completed",
+      "artworksFound": "Artworks discovered",
+      "currentLocation": "Your location",
+      "visited": "Visited",
+      "toVisit": "To visit"
+    },
+    "achievements": {
+      "levelTitle": "🏆 Visitor Level",
+      "levelText": "Level {level} – Keep scanning artworks!",
+      "achievementsTitle": "🎖️ Your Achievements",
+      "achievementsSubtitle": "Complete challenges to earn more XP",
+      "rankingTitle": "📊 Visitor Ranking",
+      "scans": "scans",
+      "you": "YOU",
+      "yourRank": "Your rank",
+      "of": "of",
+      "xpToNextRank": "XP to reach next rank"
+    },
+    "periods": {
+      "thisWeek": "This week",
+      "thisMonth": "This month",
+      "allTime": "All time"
+    },
+    "rooms": {
+      "entrance": {
+        "name": "Entrance",
+        "description": "Main door"
+      },
+      "room1": {
+        "name": "Room 1",
+        "description": "Modern Art"
+      },
+      "room2": {
+        "name": "Room 2",
+        "description": "Contemporary Art"
+      },
+      "room3": {
+        "name": "Room 3",
+        "description": "Classic Art"
+      },
+      "cafeteria": {
+        "name": "Cafeteria",
+        "description": "Rest area"
+      },
+      "store": {
+        "name": "Store",
+        "description": "Souvenirs"
+      }
+    },
+    "achievementsList": {
+      "firstScan": {
+        "name": "First Scan",
+        "description": "Scan your first artwork"
+      },
+      "explorer": {
+        "name": "Explorer",
+        "description": "Visit 5 different rooms"
+      },
+      "collector": {
+        "name": "Collector",
+        "description": "Scan 10 artworks"
+      },
+      "artExpert": {
+        "name": "Art Expert",
+        "description": "Complete all rooms"
+      }
+    }
+  },
+  "rankingPeriods": {
+    "today": "Today",
+    "thisWeek": "This week",
+    "thisMonth": "This month"
+  }
 }

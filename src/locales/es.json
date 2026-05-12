@@ -1,9 +1,251 @@
 {
-  "option": {
-    "dashboard": "Inicio",
-    "ranking-of-works": "Ranking de obras",
+  "app": {
+    "name": "KhipuTech",
+    "subtitle": "Museo de Arte Contemporáneo",
+    "footer": "© 2026 KhipuTech - Todos los derechos reservados"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "ranking": "Ranking de obras",
     "sponsors": "Patrocinadores",
-    "visitor-capacity-control": "Capacidad de visitantes",
-    "warnings": "Alertas"
+    "aforo": "Control de aforo",
+    "alertas": "Alertas",
+    "defensaCivil": "Defensa Civil",
+    "scan": "Escanear QR/NFC",
+    "detail": "Detalle de obra",
+    "map": "Mapa de recorrido",
+    "achievements": "Logros y XP"
+  },
+  "auth": {
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "usuario{'@'}ejemplo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "login": "Ingresar",
+    "orAccessAs": "o accede como",
+    "visitor": "👤 Visitante",
+    "manager": "🏛️ Gestor"
+  },
+  "layout": {
+    "logout": "Salir",
+    "roleAdmin": "Administrador",
+    "roleManager": "Gestor de Aforo",
+    "roleVisitor": "Visitante"
+  },
+  "museum": {
+    "stats": {
+      "visitorsToday": "Visitantes Hoy",
+      "artworksScanned": "Obras escaneadas",
+      "avgDuration": "Duración media",
+      "nps": "NPS"
+    },
+    "topArtworks": {
+      "title": "Obras más visitadas",
+      "colArtwork": "OBRA",
+      "colRoom": "SALA",
+      "colVisits": "VISITAS",
+      "colRetention": "% RETENCIÓN",
+      "colStatus": "ESTADO",
+      "statusOpen": "🟢 Abierto",
+      "statusMaintenance": "🟡 Mantenimiento",
+      "statusClosed": "🔴 Cerrado"
+    },
+    "visitsChart": {
+      "title": "Visitas por hora",
+      "excel": "📊 Excel",
+      "pdf": "📄 PDF",
+      "peakLabel": "Pico máximo:",
+      "avgLabel": "Promedio por hora:",
+      "visits": "visitas",
+      "yAxisLabel": "Número de visitas",
+      "datasetLabel": "Visitas por hora"
+    },
+    "ranking": {
+      "title": "Ranking de obras por engagement",
+      "pts": "pts"
+    },
+    "sponsors": {
+      "title": "Tabla de sponsors",
+      "monthlyRevenue": "Ingresos mes",
+      "activeSponsors": "Sponsors activos",
+      "totalImpressions": "Impresiones",
+      "colSponsor": "SPONSOR",
+      "colRoom": "SALA PATROCINADA",
+      "colImpressions": "IMPRESIONES",
+      "colContributed": "$ APORTADO",
+      "colStatus": "ESTADO",
+      "addSponsor": "+ Agregar sponsor",
+      "exportPdf": "📄 Exportar PDF",
+      "statusActive": "✅ Activo",
+      "statusInactive": "⏸️ Inactivo"
+    },
+    "capacity": {
+      "title": "Aforo por sala",
+      "totalInMuseum": "TOTAL EN MUSEO",
+      "criticalRooms": "SALAS CRÍTICAS",
+      "totalCapacity": "CAPACIDAD TOTAL",
+      "todayEntries": "INGRESOS HOY",
+      "colRoom": "SALA",
+      "colCurrent": "ACTUAL",
+      "colCapacity": "CAPACIDAD",
+      "colOccupancy": "OCUPACIÓN",
+      "colStatus": "ESTADO",
+      "statusNormal": "Normal",
+      "statusWarning": "Alerta",
+      "statusCritical": "Crítico",
+      "statusExceeded": "Sobrepasado"
+    },
+    "map": {
+      "title": "Mapas de salas - Distribución visual",
+      "saveConfig": "💾 Guardar config",
+      "exportPdf": "📄 Exportar PDF",
+      "exportExcel": "📊 Exportar Excel"
+    },
+    "alerts": {
+      "activeTitle": "Alertas Activas",
+      "noAlerts": "✅ No hay alertas activas - Todas las salas están en estado normal",
+      "configTitle": "Configurar notificaciones",
+      "thresholdModerate": "Umbral alerta moderada (Amarilla)",
+      "thresholdCritical": "Umbral alerta crítica (Naranja)",
+      "occupancy": "% de ocupación",
+      "notifyVia": "Notificación vía",
+      "emailChannel": "Correo electrónico",
+      "whatsapp": "WhatsApp",
+      "sms": "SMS",
+      "panel": "Panel de control",
+      "civilContact": "Contacto Defensa Civil",
+      "phonePlaceholder": "Número de teléfono",
+      "saveConfig": "💾 Guardar configuración"
+    },
+    "sensors": {
+      "title": "Estado de sensores",
+      "connected": "Conectado",
+      "disconnected": "Sin conexión"
+    },
+    "evacuation": {
+      "title": "Protocolo de evacuación",
+      "activateAlert": "🚨 Activar alerta general",
+      "callCivil": "📞 Llamar Defensa Civil",
+      "viewProtocol": "📄 Ver protocolo"
+    },
+    "report": {
+      "title": "Reporte para autoridades",
+      "description": "Generar reporte actualizado del estado del museo para enviar a Defensa Civil",
+      "sendBtn": "📨 Enviar a Defensa Civil"
+    }
+  },
+  "visitor": {
+    "scan": {
+      "title": "📱 Escanear QR / NFC",
+      "subtitle": "Coloca el código QR frente a la cámara",
+      "qrTitle": "QR Escaneado",
+      "verifyTitle": "Verifica el código QR",
+      "manualOr": "O ingresa el código manualmente",
+      "codePlaceholder": "CÓDIGO DE OBRA (Ej: KH-2025-001)",
+      "searchBtn": "🔍 Buscar",
+      "simulateValid": "Simular QR Válido",
+      "simulateInvalid": "Simular QR Inválido",
+      "simulateBlurred": "Simular Mal Enfoque",
+      "waiting": "Esperando escaneo...",
+      "waitingCode": "Esperando código QR..."
+    },
+    "artwork": {
+      "description": "📖 Descripción",
+      "audioGuide": "Guía de Audio",
+      "audioTitle": "Explicación de la obra",
+      "transcript": "📝 Transcripción",
+      "showTranscript": "Ver transcripción",
+      "hideTranscript": "Ocultar transcripción",
+      "location": "Ubicación en museo",
+      "floor": "Piso",
+      "room": "Sala",
+      "artworkCode": "Código de obra",
+      "navigateBtn": "🗺️ Ir a esta sala",
+      "relatedWorks": "Obras relacionadas",
+      "scanAnother": "Escanear otra obra",
+      "viewRelated": "Ver",
+      "defaultStyle": "Surrealismo",
+      "defaultDescription": "Esta obra maestra representa una fusión única entre el arte tradicional y las nuevas tecnologías.",
+      "defaultLocation": "Sala 2 - Arte Contemporáneo",
+      "defaultFloor": "2° Piso",
+      "defaultRoom": "Sala de Arte Contemporáneo",
+      "emptyTitle": "No hay obra seleccionada",
+      "emptyDesc": "Escanea un código QR o busca una obra manualmente para ver sus detalles"
+    },
+    "map": {
+      "explorationTitle": "Tu Progreso de Exploración",
+      "roomsExplored": "Salas exploradas",
+      "museumCompleted": "Museo completado",
+      "artworksFound": "Obras descubiertas",
+      "currentLocation": "Tu ubicación",
+      "visited": "Visitado",
+      "toVisit": "Por visitar"
+    },
+    "achievements": {
+      "levelTitle": "🏆 Nivel de Visitante",
+      "levelText": "Nivel {level} - ¡Sigue escaneando obras!",
+      "achievementsTitle": "🎖️ Tus Logros",
+      "achievementsSubtitle": "Completa desafíos para ganar más XP",
+      "rankingTitle": "📊 Ranking de Visitantes",
+      "scans": "escaneos",
+      "you": "TÚ",
+      "yourRank": "Tu posición",
+      "of": "de",
+      "xpToNextRank": "XP para alcanzar siguiente posición"
+    },
+    "periods": {
+      "thisWeek": "Esta semana",
+      "thisMonth": "Este mes",
+      "allTime": "Todo el tiempo"
+    },
+    "rooms": {
+      "entrance": {
+        "name": "Entrada",
+        "description": "Puerta principal"
+      },
+      "room1": {
+        "name": "Sala 1",
+        "description": "Arte Moderno"
+      },
+      "room2": {
+        "name": "Sala 2",
+        "description": "Arte Contemporáneo"
+      },
+      "room3": {
+        "name": "Sala 3",
+        "description": "Arte Clásico"
+      },
+      "cafeteria": {
+        "name": "Cafetería",
+        "description": "Descanso"
+      },
+      "store": {
+        "name": "Tienda",
+        "description": "Souvenirs"
+      }
+    },
+    "achievementsList": {
+      "firstScan": {
+        "name": "Primer Escaneo",
+        "description": "Escanea tu primera obra"
+      },
+      "explorer": {
+        "name": "Explorador",
+        "description": "Visita 5 salas diferentes"
+      },
+      "collector": {
+        "name": "Coleccionista",
+        "description": "Escanea 10 obras"
+      },
+      "artExpert": {
+        "name": "Experto en Arte",
+        "description": "Completa todas las salas"
+      }
+    }
+  },
+  "rankingPeriods": {
+    "today": "Hoy",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes"
   }
 }

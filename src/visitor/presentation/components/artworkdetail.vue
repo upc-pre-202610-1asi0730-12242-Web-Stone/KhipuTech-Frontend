@@ -1,35 +1,30 @@
 <template>
   <div v-if="artwork" class="artwork-detail-container">
-    <!-- Encabezado de la obra -->
     <div class="artwork-header">
       <div class="artwork-image-large">
-        <div class="image-placeholder">
-          <span class="artwork-icon">🖼️</span>
-        </div>
+        <div class="image-placeholder"><span class="artwork-icon">🖼️</span></div>
       </div>
       <div class="artwork-header-info">
         <h2>{{ artwork.title }}</h2>
         <p class="artist-name">{{ artwork.artist }}</p>
         <p class="artwork-year">{{ artwork.year }}</p>
         <div class="artwork-tags">
-          <span class="tag">{{ artwork.style || 'Surrealismo' }}</span>
-          <span class="tag">{{ artwork.technique || 'Óleo sobre lienzo' }}</span>
-          <span class="tag">{{ artwork.period || 'Siglo XX' }}</span>
+          <span class="tag">{{ artwork.style || 'Surrealism' }}</span>
+          <span class="tag">{{ artwork.technique || 'Oil on canvas' }}</span>
+          <span class="tag">{{ artwork.period || '20th century' }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Descripción -->
     <div class="artwork-description">
-      <h3>📖 Descripción</h3>
+      <h3>{{ t('visitor.artwork.description') }}</h3>
       <p>{{ artwork.description }}</p>
     </div>
 
-    <!-- Guía de Audio -->
     <div class="audio-guide-card">
       <div class="audio-header">
         <span class="audio-icon">🎧</span>
-        <h3>Guía de Audio</h3>
+        <h3>{{ t('visitor.artwork.audioGuide') }}</h3>
       </div>
       <div class="audio-player">
         <div class="audio-controls">
@@ -38,7 +33,7 @@
             <span v-else>⏸️</span>
           </button>
           <div class="audio-info">
-            <p class="audio-title">{{ artwork.audioTitle || 'Explicación de la obra' }}</p>
+            <p class="audio-title">{{ artwork.audioTitle || t('visitor.artwork.audioTitle') }}</p>
             <p class="audio-duration">{{ audioDuration }}</p>
           </div>
         </div>
@@ -51,113 +46,81 @@
         </div>
       </div>
       <div class="audio-transcript" v-if="showTranscript">
-        <h4>📝 Transcripción</h4>
-        <p>{{ artwork.transcript || 'Esta obra maestra representa una fusión única entre el arte tradicional y las nuevas tecnologías.' }}</p>
+        <h4>{{ t('visitor.artwork.transcript') }}</h4>
+        <p>{{ artwork.transcript || 'This masterpiece represents a unique fusion between traditional art and new technologies.' }}</p>
       </div>
       <button @click="showTranscript = !showTranscript" class="transcript-btn">
-        {{ showTranscript ? 'Ocultar transcripción' : 'Ver transcripción' }}
+        {{ showTranscript ? t('visitor.artwork.hideTranscript') : t('visitor.artwork.showTranscript') }}
       </button>
     </div>
 
-    <!-- Ubicación y obras relacionadas -->
     <div class="detail-two-columns">
-      <!-- Ubicación en museo -->
       <div class="location-card">
         <div class="card-header">
           <span class="card-icon">📍</span>
-          <h3>Ubicación en museo</h3>
+          <h3>{{ t('visitor.artwork.location') }}</h3>
         </div>
         <div class="location-content">
           <div class="mini-map">
             <div class="map-rooms">
-              <div class="mini-room" :class="{ active: artwork.location === 'Entrada' }">🚪</div>
-              <div class="mini-room" :class="{ active: artwork.location === 'Sala 1' }">🎨</div>
-              <div class="mini-room" :class="{ active: artwork.location === 'Sala 2' }">🖼️</div>
-              <div class="mini-room" :class="{ active: artwork.location === 'Sala 3' }">🏺</div>
+              <div class="mini-room" :class="{ active: artwork.location === 'Entrance' }">🚪</div>
+              <div class="mini-room" :class="{ active: artwork.location === 'Room 1' }">🎨</div>
+              <div class="mini-room" :class="{ active: artwork.location === 'Room 2' }">🖼️</div>
+              <div class="mini-room" :class="{ active: artwork.location === 'Room 3' }">🏺</div>
             </div>
             <div class="location-marker">
               <span class="marker-icon">📍</span>
-              <span class="marker-text">{{ artwork.location || 'Sala 2 - Arte Contemporáneo' }}</span>
+              <span class="marker-text">{{ artwork.location || 'Room 2 – Contemporary Art' }}</span>
             </div>
           </div>
           <div class="location-details">
-            <p><strong>Piso:</strong> {{ artwork.floor || '2° Piso' }}</p>
-            <p><strong>Sala:</strong> {{ artwork.room || 'Sala de Arte Contemporáneo' }}</p>
-            <p><strong>Código de obra:</strong> {{ artwork.code || artwork.title.substring(0, 8).toUpperCase() }}</p>
+            <p><strong>{{ t('visitor.artwork.floor') }}:</strong> {{ artwork.floor || '2nd Floor' }}</p>
+            <p><strong>{{ t('visitor.artwork.room') }}:</strong> {{ artwork.room || 'Contemporary Art Room' }}</p>
+            <p><strong>{{ t('visitor.artwork.artworkCode') }}:</strong> {{ artwork.code || artwork.title.substring(0, 8).toUpperCase() }}</p>
           </div>
-          <button @click="$emit('go-to-location')" class="navigate-btn">
-            🗺️ Ir a esta sala
-          </button>
+          <button @click="$emit('go-to-location')" class="navigate-btn">{{ t('visitor.artwork.navigateBtn') }}</button>
         </div>
       </div>
 
-      <!-- Obras relacionadas -->
       <div class="related-works-card">
         <div class="card-header">
           <span class="card-icon">🔗</span>
-          <h3>Obras relacionadas</h3>
+          <h3>{{ t('visitor.artwork.relatedWorks') }}</h3>
         </div>
         <div class="related-works-list">
-          <div
-              v-for="related in relatedWorks"
-              :key="related.id"
-              class="related-work-item"
-              @click="$emit('view-related', related)"
-          >
-            <div class="related-image">
-              <span>{{ related.icon || '🎨' }}</span>
-            </div>
+          <div v-for="related in relatedWorks" :key="related.id" class="related-work-item" @click="$emit('view-related', related)">
+            <div class="related-image"><span>{{ related.icon || '🎨' }}</span></div>
             <div class="related-info">
               <h4>{{ related.title }}</h4>
               <p>{{ related.artist }}</p>
               <span class="related-year">{{ related.year }}</span>
             </div>
-            <div class="related-action">
-              <span class="arrow-icon">→</span>
-            </div>
+            <div class="related-action"><span class="arrow-icon">→</span></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Botones de acción -->
     <div class="action-buttons">
-      <button @click="$emit('add-to-favorites')" class="action-btn favorite">
-        ❤️ Agregar a favoritos
-      </button>
-      <button @click="$emit('share-artwork')" class="action-btn share">
-        📤 Compartir obra
-      </button>
-      <button @click="$emit('scan-another')" class="action-btn scan">
-        📷 Escanear otra obra
-      </button>
+      <button @click="$emit('scan-another')" class="action-btn scan">📷 {{ t('visitor.artwork.scanAnother') }}</button>
     </div>
   </div>
 
   <div v-else class="empty-state">
     <div class="empty-icon">🔍</div>
-    <h3>No hay obra seleccionada</h3>
-    <p>Escanea un código QR o busca una obra manualmente para ver sus detalles</p>
+    <h3>{{ t('visitor.artwork.emptyTitle') }}</h3>
+    <p>{{ t('visitor.artwork.emptyDesc') }}</p>
   </div>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { ref } from 'vue'
 
-const props = defineProps({
-  artwork: {
-    type: Object,
-    default: null
-  },
-  relatedWorks: {
-    type: Array,
-    default: () => []
-  }
-})
-
+defineProps({ artwork: { type: Object, default: null }, relatedWorks: { type: Array, default: () => [] } })
 defineEmits(['go-to-location', 'view-related', 'add-to-favorites', 'share-artwork', 'scan-another'])
 
-// Audio
 const isPlaying = ref(false)
 const audioProgress = ref(0)
 const audioDuration = ref('02:30')
@@ -167,428 +130,91 @@ let audioInterval = null
 
 const toggleAudio = () => {
   isPlaying.value = !isPlaying.value
-
   if (isPlaying.value) {
     audioInterval = setInterval(() => {
-      if (audioProgress.value < 100) {
-        audioProgress.value += 1
-      } else {
-        stopAudio()
-      }
+      if (audioProgress.value < 100) { audioProgress.value += 1 } else { stopAudio() }
     }, 1500)
-  } else {
-    stopAudio()
-  }
+  } else { stopAudio() }
 }
 
 const stopAudio = () => {
   isPlaying.value = false
-  if (audioInterval) {
-    clearInterval(audioInterval)
-    audioInterval = null
-  }
+  if (audioInterval) { clearInterval(audioInterval); audioInterval = null }
 }
 
 const seekAudio = (event) => {
   const rect = event.currentTarget.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const percentage = (x / rect.width) * 100
-  audioProgress.value = Math.min(100, Math.max(0, percentage))
+  audioProgress.value = Math.min(100, Math.max(0, ((event.clientX - rect.left) / rect.width) * 100))
 }
 
-const changeVolume = () => {
-  console.log('Volumen cambiado a:', volume.value)
-}
+const changeVolume = () => { console.log('Volume:', volume.value) }
 </script>
 
 <style scoped>
-.artwork-detail-container {
-  animation: fadeIn 0.5s ease;
-}
-
-.artwork-header {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 25px;
-  margin-bottom: 30px;
-  background: white;
-  border-radius: 20px;
-  padding: 25px;
-}
-
-.artwork-image-large {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(135deg, #667eea20, #764ba220);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-placeholder {
-  text-align: center;
-}
-
-.artwork-icon {
-  font-size: 80px;
-}
-
-.artwork-header-info h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.artist-name {
-  font-size: 18px;
-  color: #667eea;
-  margin-bottom: 5px;
-}
-
-.artwork-year {
-  color: #7f8c8d;
-  margin-bottom: 15px;
-}
-
-.artwork-tags {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  background: #f0f0f0;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  color: #2c3e50;
-}
-
-.artwork-description {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.artwork-description h3 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-}
-
-.audio-guide-card {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.audio-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.audio-icon {
-  font-size: 28px;
-}
-
-.audio-player {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 15px;
-}
-
-.audio-controls {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.audio-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.audio-btn:hover {
-  transform: scale(1.05);
-}
-
-.audio-btn.playing {
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
-}
-
-.audio-info {
-  flex: 1;
-}
-
-.audio-title {
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.audio-duration {
-  font-size: 12px;
-  color: #7f8c8d;
-}
-
-.audio-progress-container {
-  height: 5px;
-  background: #e0e0e0;
-  border-radius: 5px;
-  margin: 15px 0;
-  cursor: pointer;
-}
-
-.audio-progress {
-  height: 100%;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 5px;
-  transition: width 0.1s linear;
-}
-
-.audio-volume {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.volume-slider {
-  width: 100px;
-  cursor: pointer;
-}
-
-.transcript-btn {
-  margin-top: 15px;
-  background: none;
-  border: none;
-  color: #667eea;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.audio-transcript {
-  margin-top: 15px;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 10px;
-}
-
-.audio-transcript h4 {
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.detail-two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-  margin-bottom: 25px;
-}
-
-.location-card, .related-works-card {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-.card-icon {
-  font-size: 24px;
-}
-
-.mini-map {
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-.map-rooms {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
-}
-
-.mini-room {
-  font-size: 30px;
-  opacity: 0.5;
-  transition: all 0.3s;
-}
-
-.mini-room.active {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.location-marker {
-  text-align: center;
-  padding: 10px;
-  background: #667eea20;
-  border-radius: 10px;
-}
-
-.marker-icon {
-  font-size: 20px;
-  margin-right: 8px;
-}
-
-.marker-text {
-  font-weight: 600;
-  color: #667eea;
-}
-
-.location-details {
-  margin: 15px 0;
-}
-
-.location-details p {
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.navigate-btn {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.related-works-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.related-work-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.related-work-item:hover {
-  transform: translateX(5px);
-  background: #667eea10;
-}
-
-.related-image {
-  font-size: 40px;
-}
-
-.related-info {
-  flex: 1;
-}
-
-.related-info h4 {
-  margin-bottom: 3px;
-  font-size: 14px;
-  color: #2c3e50;
-}
-
-.related-info p {
-  font-size: 12px;
-  color: #7f8c8d;
-}
-
-.related-year {
-  font-size: 11px;
-  color: #667eea;
-}
-
-.arrow-icon {
-  font-size: 20px;
-  color: #bdc3c7;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-
-.action-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: transform 0.2s;
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-}
-
-.action-btn.favorite {
-  background: #ff6b6b;
-  color: white;
-}
-
-.action-btn.share {
-  background: #3498db;
-  color: white;
-}
-
-.action-btn.scan {
-  background: #95a5a6;
-  color: white;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px;
-  background: white;
-  border-radius: 20px;
-}
-
-.empty-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 768px) {
-  .artwork-header {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .detail-two-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-}
+.artwork-detail-container { display: flex; flex-direction: column; gap: 25px; }
+.artwork-header { display: flex; gap: 30px; background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.artwork-image-large { width: 200px; height: 200px; flex-shrink: 0; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.artwork-icon { font-size: 80px; }
+.artwork-header-info { flex: 1; }
+.artwork-header-info h2 { margin: 0 0 10px; color: #2c3e50; font-size: 24px; }
+.artist-name { color: #667eea; font-weight: 500; margin-bottom: 5px; }
+.artwork-year { color: #7f8c8d; margin-bottom: 15px; }
+.artwork-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 12px; color: #555; }
+.artwork-description { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.artwork-description h3 { margin: 0 0 15px; color: #2c3e50; }
+.artwork-description p { color: #555; line-height: 1.6; }
+.audio-guide-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.audio-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.audio-icon { font-size: 24px; }
+.audio-header h3 { margin: 0; color: #2c3e50; }
+.audio-controls { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.audio-btn { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.audio-btn.playing { animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.audio-info { flex: 1; }
+.audio-title { margin: 0; font-weight: 500; color: #2c3e50; }
+.audio-duration { margin: 0; font-size: 12px; color: #7f8c8d; }
+.audio-progress-container { background: #e0e0e0; border-radius: 5px; height: 6px; cursor: pointer; margin-bottom: 15px; }
+.audio-progress { background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; border-radius: 5px; }
+.audio-volume { display: flex; align-items: center; gap: 10px; }
+.volume-icon { font-size: 18px; }
+.volume-slider { flex: 1; }
+.audio-transcript { background: #f8f9fa; border-radius: 10px; padding: 15px; margin: 15px 0; }
+.audio-transcript h4 { margin: 0 0 10px; color: #2c3e50; }
+.audio-transcript p { margin: 0; color: #555; font-size: 13px; line-height: 1.5; }
+.transcript-btn { padding: 8px 16px; background: none; border: 1px solid #667eea; border-radius: 8px; color: #667eea; cursor: pointer; font-size: 12px; }
+.detail-two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.location-card, .related-works-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.card-icon { font-size: 24px; }
+.card-header h3 { margin: 0; color: #2c3e50; }
+.mini-map { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+.map-rooms { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+.mini-room { width: 40px; height: 40px; background: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.mini-room.active { background: linear-gradient(135deg, #667eea, #764ba2); }
+.location-marker { display: flex; align-items: center; gap: 5px; justify-content: center; }
+.marker-icon { font-size: 18px; }
+.marker-text { font-size: 13px; color: #2c3e50; font-weight: 500; }
+.location-details p { margin: 8px 0; font-size: 13px; color: #555; }
+.navigate-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 15px; transition: transform 0.2s; }
+.navigate-btn:hover { transform: translateY(-2px); }
+.related-works-list { display: flex; flex-direction: column; gap: 12px; }
+.related-work-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; transition: transform 0.2s; }
+.related-work-item:hover { transform: translateX(5px); }
+.related-image { width: 45px; height: 45px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.related-info { flex: 1; }
+.related-info h4 { margin: 0 0 3px; font-size: 13px; color: #2c3e50; }
+.related-info p { margin: 0; font-size: 11px; color: #7f8c8d; }
+.related-year { font-size: 10px; color: #7f8c8d; }
+.arrow-icon { font-size: 18px; color: #667eea; }
+.action-buttons { display: flex; gap: 15px; justify-content: center; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.action-btn { padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: transform 0.2s; }
+.action-btn.scan { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.action-btn:hover { transform: translateY(-2px); }
+.empty-state { text-align: center; padding: 80px 20px; background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.empty-icon { font-size: 60px; margin-bottom: 20px; }
+.empty-state h3 { color: #2c3e50; margin-bottom: 10px; }
+.empty-state p { color: #7f8c8d; }
+@media (max-width: 768px) { .artwork-header { flex-direction: column; } .artwork-image-large { width: 100%; height: 150px; } .detail-two-columns { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
 </style>
