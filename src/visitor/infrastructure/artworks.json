@@ -1,0 +1,11 @@
+﻿{
+  "artworks": [
+    { "id": 1, "name": "Los funerales de Atahualpa", "author": "Luis Montero", "room": "Sala de Arte Republicano" },
+    { "id": 2, "name": "Trinidad Trifacial", "author": "Anónimo Cusqueño", "room": "Sala de Arte Colonial" },
+    { "id": 3, "name": "El Contorsionista", "author": "Cultura Cupisnique", "room": "Sala de Arte Precolombino" },
+    { "id": 4, "name": "Retablo", "author": "Joaquín López Antay", "room": "Sala de Arte Popular" },
+    { "id": 5, "name": "Abstracción", "author": "Fernando de Szyszlo", "room": "Sala de Arte Contemporáneo" },
+    { "id": 6, "name": "Manto funerario Paracas", "author": "Cultura Paracas", "room": "Sala de Textiles" }
+  ]
+}
+

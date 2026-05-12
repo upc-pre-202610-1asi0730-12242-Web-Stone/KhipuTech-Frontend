@@ -92,7 +92,7 @@
                   @activar-alerta-general="activarAlertaGeneral"
                   @llamar-defensa-civil="llamarDefensaCivil"
                   @ver-protocolo="verProtocolo"
-              />PrivateDashboard
+              />
               <ReporteAutoridades @enviar-reporte="enviarReporte" />
             </div>
             <EstadoSensores :sensores="sensores" />
@@ -104,8 +104,10 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch} from 'vue'
-import { useIamStore } from '../../../iam/application/iam-store'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useIamStore } from '@/iam/application/iam-store.js'
+import { usePrivateStore } from '@/museum/application/private.store.js'
+import { useVisitorStore } from '@/visitor/application/visitor.store.js'
 import { useRouter } from 'vue-router'
 import SharedLayout from '../../../shared/presentation/components/layout.vue'
 import StatsCards from '../components/statscards.vue'
@@ -113,19 +115,20 @@ import TopArtworksTable from '../components/topartworkstable.vue'
 import VisitsChart from '../components/visitschart.vue'
 import RankingList from '../components/rankinglist.vue'
 import SponsorsSection from '../components/sponsorssection.vue'
-import ConfigAlertas from "../components/configalertas.vue";
-import ProtocoloEvacuacion from "../components/protocoloevacuacion.vue";
-import CapacityTable from "../components/capacitytable.vue";
-import ReporteAutoridades from "../components/reporteautoridades.vue";
-import CapacityCards from "../components/capacitycards.vue";
-import AlertasActivas from "../components/alertasactivas.vue";
-import MapaVisual from "../components/mapavisual.vue";
-import EstadoSensores from "../components/estadosensores.vue";
+import ConfigAlertas from "../components/configalertas.vue"
+import ProtocoloEvacuacion from "../components/protocoloevacuacion.vue"
+import CapacityTable from "../components/capacitytable.vue"
+import ReporteAutoridades from "../components/reporteautoridades.vue"
+import CapacityCards from "../components/capacitycards.vue"
+import AlertasActivas from "../components/alertasactivas.vue"
+import MapaVisual from "../components/mapavisual.vue"
+import EstadoSensores from "../components/estadosensores.vue"
 
 const iamStore = useIamStore()
+const privateStore = usePrivateStore()
+const visitorStore = useVisitorStore()
 const router = useRouter()
 const activeTab = ref('dashboard')
-const user = computed(() => iamStore.user)
 
 const menuItems = [
   { id: 'dashboard', name: 'Dashboard', icon: '📊' },
@@ -148,17 +151,22 @@ const stats = ref({
   npsChange: 4
 })
 
-const obrasMasVisitadas = ref([
-  { id: 1, nombre: 'La persistencia de la memoria', sala: 'Sala 2', visitas: 342, retencion: 78, estado: 'abierto' },
-  { id: 2, nombre: 'La noche estrellada', sala: 'Sala 1', visitas: 298, retencion: 65, estado: 'abierto' },
-  { id: 3, nombre: 'El grito', sala: 'Sala 1', visitas: 256, retencion: 54, estado: 'mantenimiento' },
-  { id: 4, nombre: 'Guernica', sala: 'Sala 3', visitas: 187, retencion: 82, estado: 'abierto' },
-  { id: 5, nombre: 'El beso', sala: 'Sala 2', visitas: 165, retencion: 71, estado: 'abierto' }
-])
+const obrasMasVisitadas = computed(() =>
+    privateStore.artworkStats.map(s => {
+      const artwork = visitorStore.artworks.find(a => a.id === s.artworkId)
+      return {
+        id: s.id,
+        nombre: artwork?.name || 'Sin nombre',
+        sala: artwork?.room || '-',
+        visitas: s.visits,
+        retencion: s.retentionPercentage,
+        estado: 'abierto'
+      }
+    })
+)
 
 const visitsByHour = ref([12, 8, 5, 7, 15, 28, 45, 62, 58, 42, 35, 48, 72, 85, 68, 54, 38, 25, 18, 12, 8, 6, 4, 3])
 const hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
-
 const maxVisitsHour = computed(() => Math.max(...visitsByHour.value))
 const avgVisitsPerHour = computed(() => Math.round(visitsByHour.value.reduce((a, b) => a + b, 0) / 24))
 
@@ -166,73 +174,111 @@ const avgVisitsPerHour = computed(() => Math.round(visitsByHour.value.reduce((a,
 const rankingPeriods = ref(['Hoy', 'Esta semana', 'Este mes'])
 const currentRankingPeriod = ref('Esta semana')
 
-const rankingObras = ref([
-  { id: 1, nombre: 'La persistencia de la memoria', sala: 'Sala 2', artista: 'Salvador Dalí', engagement: 98, tiempoPromedio: 4.2, trend: 'up' },
-  { id: 2, nombre: 'La noche estrellada', sala: 'Sala 1', artista: 'Van Gogh', engagement: 92, tiempoPromedio: 3.8, trend: 'up' },
-  { id: 3, nombre: 'El beso', sala: 'Sala 2', artista: 'Gustav Klimt', engagement: 87, tiempoPromedio: 3.5, trend: 'down' },
-  { id: 4, nombre: 'Guernica', sala: 'Sala 3', artista: 'Picasso', engagement: 81, tiempoPromedio: 4.5, trend: 'down' },
-  { id: 5, nombre: 'El pensador', sala: 'Sala 3', artista: 'Rodin', engagement: 76, tiempoPromedio: 3.2, trend: 'up' }
-])
+const rankingObras = computed(() =>
+    [...privateStore.artworkStats]
+        .sort((a, b) => b.score - a.score)
+        .map((s, index) => {
+          const artwork = visitorStore.artworks.find(a => a.id === s.artworkId)
+          return {
+            id: s.id,
+            nombre: artwork?.name || 'Sin nombre',
+            sala: artwork?.room || '-',
+            artista: artwork?.author || '-',
+            engagement: s.retentionPercentage,
+            tiempoPromedio: s.retentionMinutes,
+            trend: index < 3 ? 'up' : 'down'
+          }
+        })
+)
 
 // ========== SPONSORS ==========
 const ingresosMes = ref(28450)
 const sponsorsActivos = ref(8)
 const impresionesTotales = ref(15780)
-
 const sponsors = ref([
   { id: 1, nombre: 'Coca-Cola', sala: 'Sala 1 - Arte Moderno', impresiones: 3420, aportado: 8500, estado: 'activo' },
-  { id: 2, nombre: 'Banco Interbank', sala: 'Sala 2 - Contemporáneo', impresiones: 2890, aportado: 7200, estado: 'activo' },
-  { id: 3, nombre: 'Movistar', sala: 'Sala 3 - Clásico', impresiones: 2150, aportado: 5400, estado: 'activo' },
-  { id: 4, nombre: 'Backus', sala: 'Cafetería', impresiones: 1890, aportado: 4200, estado: 'inactivo' },
-  { id: 5, nombre: 'Samsung', sala: 'Entrada Principal', impresiones: 3120, aportado: 7800, estado: 'activo' }
-])
-// ========== CONTROL DE AFORO ==========
-const aforo = ref({
-  totalEnMuseo: 851,
-  salasCriticas: 2,
-  capacidadTotal: 1000,
-  ingresosHoy: 1248
-})
-
-const aforoPorSala = ref([
-  { id: 1, nombre: 'Sala 1 - Arte Moderno', actual: 145, capacidad: 200, porcentaje: 73, estadoClase: 'normal', estadoTexto: 'Normal' },
-  { id: 2, nombre: 'Sala 2 - Contemporáneo', actual: 178, capacidad: 200, porcentaje: 89, estadoClase: 'moderada', estadoTexto: 'Crítico' },
-  { id: 3, nombre: 'Sala 3 - Clásico', actual: 210, capacidad: 200, porcentaje: 105, estadoClase: 'critica', estadoTexto: 'Sobrepasado' },
-  { id: 4, nombre: 'Sala 4 - Temporal', actual: 95, capacidad: 150, porcentaje: 63, estadoClase: 'normal', estadoTexto: 'Normal' },
-  { id: 5, nombre: 'Sala 5 - Esculturas', actual: 82, capacidad: 120, porcentaje: 68, estadoClase: 'normal', estadoTexto: 'Normal' }
-])
-
-const mapasSalas = ref([
-  { id: 1, nombre: 'Sala 1 - Arte Moderno', asientos: 200, ocupados: 145, estadoClase: 'normal', estadoTexto: 'Normal' },
-  { id: 2, nombre: 'Sala 2 - Contemporáneo', asientos: 200, ocupados: 178, estadoClase: 'moderada', estadoTexto: 'Crítico' },
-  { id: 3, nombre: 'Sala 3 - Clásico', asientos: 200, ocupados: 210, estadoClase: 'critica', estadoTexto: 'Sobrepasado' }
+  { id: 2, nombre: 'Banco Interbank', sala: 'Sala 2 - Contemporáneo', impresiones: 2890, aportado: 7200, estado: 'activo' }
 ])
 
 // ========== ALERTAS ==========
 const config = ref({
   umbralModerada: 80,
   umbralCritica: 95,
-  notificaciones: {
-    correo: true,
-    whatsapp: false,
-    sms: false,
-    panel: true
-  },
+  notificaciones: { correo: true, whatsapp: false, sms: false, panel: true },
   contactoDefensaCivil: '911 - 123 456'
 })
 
-const alertasActivas = ref([
-  { id: 1, sala: 'Sala 2 - Contemporáneo', tipo: 'moderada', mensaje: 'Ocupación al 89% - Cerca del umbral crítico', tiempo: 'Hace 5 minutos' },
-  { id: 2, sala: 'Sala 3 - Clásico', tipo: 'critica', mensaje: '¡OCUPACIÓN EXCEDIDA! 105% de capacidad', tiempo: 'Hace 12 minutos' }
-])
+// ========== CONTROL DE AFORO ==========
+const aforoPorSala = computed(() =>
+    privateStore.sensors.map(s => {
+      let estadoClase = 'normal'
+      let estadoTexto = 'Normal'
+      if (s.occupancyPercentage >= 100) { estadoClase = 'critica'; estadoTexto = 'Sobrepasado' }
+      else if (s.occupancyPercentage >= config.value.umbralCritica) { estadoClase = 'critica'; estadoTexto = 'Crítico' }
+      else if (s.occupancyPercentage >= config.value.umbralModerada) { estadoClase = 'moderada'; estadoTexto = 'Alerta' }
+      return {
+        id: s.id,
+        nombre: s.room,
+        actual: s.currentPersons,
+        capacidad: s.capacity,
+        porcentaje: s.occupancyPercentage,
+        estadoClase,
+        estadoTexto
+      }
+    })
+)
+
+const aforo = computed(() => ({
+  totalEnMuseo: privateStore.sensors.reduce((acc, s) => acc + s.currentPersons, 0),
+  salasCriticas: aforoPorSala.value.filter(s => s.estadoClase !== 'normal').length,
+  capacidadTotal: privateStore.sensors.reduce((acc, s) => acc + s.capacity, 0),
+  ingresosHoy: 1248
+}))
+
+const mapasSalas = computed(() =>
+    privateStore.sensors.map(s => ({
+      id: s.id,
+      nombre: s.room,
+      asientos: s.capacity,
+      ocupados: s.currentPersons,
+      estadoClase: aforoPorSala.value.find(a => a.id === s.id)?.estadoClase || 'normal',
+      estadoTexto: aforoPorSala.value.find(a => a.id === s.id)?.estadoTexto || 'Normal'
+    }))
+)
 
 // ========== SENSORES ==========
-const sensores = ref([
-  { id: 1, nombre: 'Sensor entrada principal', ubicacion: 'Puerta principal', estado: 'activo' },
-  { id: 2, nombre: 'Sensor Sala Central', ubicacion: 'Sala 2', estado: 'activo' },
-  { id: 3, nombre: 'Sensor jardín', ubicacion: 'Jardín esculturas', estado: 'inactivo' },
-  { id: 4, nombre: 'Sensor Sala 3', ubicacion: 'Sala Clásica', estado: 'activo' }
-])
+const sensores = computed(() =>
+    privateStore.sensors.map(s => ({
+      id: s.id,
+      nombre: `Sensor ${s.room}`,
+      ubicacion: s.room,
+      estado: 'activo'
+    }))
+)
+
+// ========== ALERTAS ACTIVAS ==========
+const alertasActivas = computed(() =>
+    aforoPorSala.value
+        .filter(s => s.estadoClase !== 'normal')
+        .map(s => ({
+          id: s.id,
+          sala: s.nombre,
+          tipo: s.estadoClase,
+          mensaje: s.estadoTexto === 'Sobrepasado'
+              ? `¡OCUPACIÓN EXCEDIDA! ${s.porcentaje}% de capacidad`
+              : `Ocupación al ${s.porcentaje}% - Cerca del umbral crítico`,
+          tiempo: 'Ahora'
+        }))
+)
+
+// ========== ONMOUNTED ==========
+onMounted(async () => {
+  await Promise.all([
+    privateStore.fetchArtworkStats(),
+    privateStore.fetchSensors(),
+    visitorStore.fetchArtworks()
+  ])
+})
 
 // ========== FUNCIONES ==========
 const handleLogout = () => {
@@ -244,44 +290,18 @@ const exportToExcel = () => alert('📊 Exportando a Excel...')
 const exportToPDF = () => alert('📄 Exportando a PDF...')
 const exportSponsorsPDF = () => alert('📄 Exportando sponsors a PDF')
 const agregarSponsor = () => alert('➕ Agregar nuevo sponsor')
-
-const actualizarPorcentajes = () => {
-  aforoPorSala.value.forEach(sala => {
-    sala.porcentaje = Math.round((sala.actual / sala.capacidad) * 100)
-    if (sala.porcentaje >= 100) {
-      sala.estadoClase = 'critica'
-      sala.estadoTexto = 'Sobrepasado'
-    } else if (sala.porcentaje >= config.value.umbralCritica) {
-      sala.estadoClase = 'critica'
-      sala.estadoTexto = 'Crítico'
-    } else if (sala.porcentaje >= config.value.umbralModerada) {
-      sala.estadoClase = 'moderada'
-      sala.estadoTexto = 'Alerta'
-    } else {
-      sala.estadoClase = 'normal'
-      sala.estadoTexto = 'Normal'
-    }
-  })
-  aforo.value.salasCriticas = aforoPorSala.value.filter(s => s.estadoClase !== 'normal').length
-}
-
-const guardarConfiguracion = () => {
-  actualizarPorcentajes()
-  alert('✅ Configuración guardada exitosamente')
-}
-
+const guardarConfiguracion = () => alert('✅ Configuración guardada exitosamente')
 const guardarConfigMapas = () => alert('💾 Configuración de mapas guardada')
 const exportarMapasPDF = () => alert('📄 Exportando mapas a PDF')
 const exportarMapasExcel = () => alert('📊 Exportando mapas a Excel')
-const activarAlertaGeneral = () => alert('🚨 ALERTA GENERAL ACTIVADA - Protocolo de evacuación iniciado')
+const activarAlertaGeneral = () => alert('🚨 ALERTA GENERAL ACTIVADA')
 const llamarDefensaCivil = () => alert(`📞 Llamando a Defensa Civil: ${config.value.contactoDefensaCivil}`)
 const verProtocolo = () => alert('📄 Abriendo protocolo de evacuación completo')
 const enviarReporte = () => alert('📨 Reporte enviado a Defensa Civil')
 
 watch([() => config.value.umbralModerada, () => config.value.umbralCritica], () => {
-  actualizarPorcentajes()
+  aforoPorSala.value
 })
-
 </script>
 
 <style scoped>

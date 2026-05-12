@@ -1,0 +1,11 @@
+﻿{
+  "sensors": [
+    { "id": 1, "room": "Sala de Arte Precolombino", "currentPersons": 22, "capacity": 35, "occupancyPercentage": 62.9 },
+    { "id": 2, "room": "Sala de Textiles", "currentPersons": 14, "capacity": 25, "occupancyPercentage": 56.0 },
+    { "id": 3, "room": "Sala de Arte Colonial", "currentPersons": 30, "capacity": 35, "occupancyPercentage": 85.7 },
+    { "id": 4, "room": "Sala de Arte Republicano", "currentPersons": 38, "capacity": 40, "occupancyPercentage": 95.0 },
+    { "id": 5, "room": "Sala de Arte Popular", "currentPersons": 9, "capacity": 30, "occupancyPercentage": 30.0 },
+    { "id": 6, "room": "Sala de Arte Contemporáneo", "currentPersons": 17, "capacity": 40, "occupancyPercentage": 42.5 }
+  ]
+}
+
