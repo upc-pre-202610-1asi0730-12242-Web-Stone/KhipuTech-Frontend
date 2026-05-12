@@ -85,10 +85,7 @@
                   <div class="recommendation-icon">🎨</div>
                   <h4>Ruta Arte Moderno</h4>
                   <p>Explora obras contemporáneas.</p>
-                  <button
-                      class="recommendation-btn"
-                      @click="router.push('/recorrido/moderno')"
-                  >
+                  <button class="recommendation-btn" @click="router.push('/recorrido/moderno')">
                     Ver recorrido
                   </button>
                 </div>
@@ -97,10 +94,7 @@
                   <div class="recommendation-icon">🏺</div>
                   <h4>Ruta Clásica</h4>
                   <p>Descubre las piezas históricas más destacadas del museo.</p>
-                  <button
-                      class="recommendation-btn"
-                      @click="router.push('/recorrido/clasica')"
-                  >
+                  <button class="recommendation-btn" @click="router.push('/recorrido/clasica')">
                     Ver recorrido
                   </button>
                 </div>
@@ -109,10 +103,7 @@
                   <div class="recommendation-icon">☕</div>
                   <h4>Ruta Relax</h4>
                   <p>Un recorrido tranquilo.</p>
-                  <button
-                      class="recommendation-btn"
-                      @click="router.push('/recorrido/relax')"
-                  >
+                  <button class="recommendation-btn" @click="router.push('/recorrido/relax')">
                     Ver recorrido
                   </button>
                 </div>
