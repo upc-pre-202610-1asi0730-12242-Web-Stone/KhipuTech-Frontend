@@ -1,27 +1,26 @@
 ﻿import { defineStore } from 'pinia'
-import { visitorApi } from '../infrastructure/visitor-api'
-import { ArtworksAssembler } from '../infrastructure/artworks.assembler.js'
+import { ref } from 'vue'
+import { VisitorApi } from '../infrastructure/visitor-api.js'
 
-export const useVisitorStore = defineStore('visitor', {
-    state: () => ({
-        currentArtwork: null,
-        scannedArtworks: [],
-        achievements: [],
-        currentXP: 450,
-        userRanking: []
-    }),
+export const useVisitorStore = defineStore('visitor', () => {
+    const artworks = ref([])
+    const selectedArtwork = ref(null)
+    const loading = ref(false)
 
-    actions: {
-        async scanArtwork(code) {
-            const response = await visitorApi.scanQR(code)
-            this.currentArtwork = ArtworksAssembler.toDomain(response)
-            this.scannedArtworks.push(this.currentArtwork)
-            return this.currentArtwork
-        },
-
-        async getRanking(period) {
-            const response = await visitorApi.getRanking(period)
-            this.userRanking = response
-        }
+    async function fetchArtworks() {
+        loading.value = true
+        artworks.value = await VisitorApi.getAll()
+        loading.value = false
     }
+
+    async function fetchArtworkById(id) {
+        selectedArtwork.value = await VisitorApi.getById(id)
+    }
+
+    async function createArtwork(entity) {
+        await VisitorApi.create(entity)
+        await fetchArtworks()
+    }
+
+    return { artworks, selectedArtwork, loading, fetchArtworks, fetchArtworkById, createArtwork }
 })
