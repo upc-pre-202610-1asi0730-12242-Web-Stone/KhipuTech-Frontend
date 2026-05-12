@@ -1,6 +1,6 @@
 ﻿import { defineStore } from 'pinia'
 import { visitorApi } from '../infrastructure/visitor-api'
-import { ArtworkAssembler } from '../infrastructure/artwork.assembler'
+import { ArtworksAssembler } from '../infrastructure/artworks.assembler.js'
 
 export const useVisitorStore = defineStore('visitor', {
     state: () => ({
@@ -14,7 +14,7 @@ export const useVisitorStore = defineStore('visitor', {
     actions: {
         async scanArtwork(code) {
             const response = await visitorApi.scanQR(code)
-            this.currentArtwork = ArtworkAssembler.toDomain(response)
+            this.currentArtwork = ArtworksAssembler.toDomain(response)
             this.scannedArtworks.push(this.currentArtwork)
             return this.currentArtwork
         },
