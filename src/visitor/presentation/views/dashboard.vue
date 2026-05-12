@@ -61,6 +61,7 @@
 
           <!-- Tab: Mapa de recorrido -->
           <div v-if="activeTab === 'map'" class="tab-content">
+
             <MuseumMap
                 :rooms="museumRooms"
                 :current-room="currentRoom"
@@ -70,6 +71,46 @@
                 :artworks-found="artworksFound"
                 @go-to-room="goToRoom"
             />
+
+            <!-- Recomendaciones -->
+            <div class="recommendations-section">
+              <div class="recommendations-header">
+                <h3>✨ En base a tus obras favoritas</h3>
+                <p>Recorridos recomendados para ti</p>
+              </div>
+
+              <div class="recommendations-grid">
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">🎨</div>
+                  <h4>Ruta Arte Moderno</h4>
+                  <p>Explora obras contemporáneas.</p>
+                  <button class="recommendation-btn">
+                    Ver recorrido
+                  </button>
+                </div>
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">🏺</div>
+                  <h4>Ruta Clásica</h4>
+                  <p>Descubre las piezas históricas más destacadas del museo.</p>
+                  <button class="recommendation-btn">
+                    Ver recorrido
+                  </button>
+                </div>
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">☕</div>
+                  <h4>Ruta Relax</h4>
+                  <p>Un recorrido tranquilo.</p>
+                  <button class="recommendation-btn">
+                    Ver recorrido
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
           </div>
 
           <!-- Tab: Logros y XP -->
@@ -305,6 +346,86 @@ watch(currentXP, (newXP) => {
 </script>
 
 <style scoped>
+
+/* ===== RECOMENDACIONES ===== */
+
+.recommendations-section {
+  margin-top: 35px;
+}
+
+.recommendations-header {
+  margin-bottom: 20px;
+}
+
+.recommendations-header h3 {
+  font-size: 24px;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.recommendations-header p {
+  color: #64748b;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.recommendation-card {
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.recommendation-icon {
+  font-size: 34px;
+  margin-bottom: 14px;
+}
+
+.recommendation-card h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.recommendation-card p {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.recommendation-btn {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.recommendation-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
