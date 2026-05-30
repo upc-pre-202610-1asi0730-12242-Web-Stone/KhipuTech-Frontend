@@ -4,11 +4,11 @@
         this.email = email
         this.name = name
         this.role = role
-        this.type = type  // 'visitor', 'museum', 'public'
+        this.type = type  // 'visiting', 'gestor', 'public'
         this.createdAt = new Date()
     }
 
     isVisitor() { return this.role === 'visitor' }
-    isPrivate() { return this.type === 'museum' }
+    isPrivate() { return this.type === 'gestor' }
     isPublic() { return this.type === 'public' }
 }

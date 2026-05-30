@@ -50,11 +50,14 @@
       </div>
 
       <div class="visitor-buttons">
-        <button @click="enterAsVisitor('visitor')" class="btn-visitor">
+        <button @click="enterAsRole('public')" class="btn-visitor">
           👤 Visitante
         </button>
-        <button @click="enterAsVisitor('museum')" class="btn-visitor private">
+        <button @click="enterAsRole('gestor')" class="btn-visitor private">
           🏛️ Gestor
+        </button>
+        <button @click="enterAsRole('curator')" class="btn-visitor curator">
+          🎨 Curador
         </button>
       </div>
     </div>
@@ -78,15 +81,20 @@ const iamStore = useIamStore()
 
 const handleLogin = async () => {
   await iamStore.signIn(email.value, password.value)
-  router.push('/dashboard')
+  const user = iamStore.user
+  if (user?.type === 'gestor') router.push('/operation/aforo')
+  else if (user?.type === 'curator') router.push('/analytics/dashboard')
+  else router.push('/visiting/scan')
 }
 
-const enterAsVisitor = async (type) => {
+const enterAsRole = (type) => {
   iamStore.setVisitorMode(type)
-  if (type === 'museum') {
-    router.push('/dashboard-museum')
+  if (type === 'gestor') {
+    router.push('/operation/aforo')
+  } else if (type === 'curator') {
+    router.push('/analytics/dashboard')
   } else {
-    router.push('/dashboard')
+    router.push('/visiting/scan')
   }
 }
 </script>
@@ -282,6 +290,12 @@ const enterAsVisitor = async (type) => {
 
 .btn-visitor.public {
   background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+  color: white;
+  border: none;
+}
+
+.btn-visitor.curator {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
   color: white;
   border: none;
 }

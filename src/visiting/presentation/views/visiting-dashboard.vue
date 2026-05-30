@@ -3,7 +3,7 @@
     <SharedLayout
         :menu-items="menuItems"
         :current-tab="activeTab"
-        @update:tab="activeTab = $event"
+        @update:tab="navegarATab"
         @logout="handleLogout"
     >
       <template #content>
@@ -15,7 +15,6 @@
               <p>Coloca el código QR frente a la cámara</p>
             </div>
 
-            <!-- Layout de dos columnas para el escáner -->
             <div class="scanner-layout">
               <QRScanner
                   :scanned-data="scannedData"
@@ -28,13 +27,11 @@
               />
             </div>
 
-            <!-- Búsqueda manual -->
             <ManualCodeSearch
                 v-model:code="manualCode"
                 @search="searchCode"
             />
 
-            <!-- Botones de simulación (solo desarrollo) -->
             <div class="simulation-buttons">
               <button @click="simulateQRScan('KH-2025-001', 'La persistencia de la memoria')" class="simulate-btn success">
                 Simular QR Válido
@@ -99,7 +96,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useIamStore } from '../../../iam/application/iam-store.js'
 import SharedLayout from '../../../shared/presentation/components/layout.vue'
 import QRScanner from '../components/qrscanner.vue'
@@ -110,18 +107,50 @@ import MuseumMap from '../components/museummap.vue'
 import AchievementsPanel from '../components/achievementspanel.vue'
 import RankingPanel from '../components/rankingpanel.vue'
 
+const props = defineProps({
+  tab: { type: String, default: 'scan' }
+})
+
 const iamStore = useIamStore()
 const router = useRouter()
-const activeTab = ref('scan')
+const route = useRoute()
+const activeTab = ref(props.tab)
 const manualCode = ref('')
 const user = computed(() => iamStore.user)
 
-const menuItems = [
-  { id: 'scan', name: 'Escanear QR/NFC', icon: '📱' },
-  { id: 'detail', name: 'Detalle de obra', icon: '🖼️' },
-  { id: 'map', name: 'Mapa de recorrido', icon: '🗺️' },
-  { id: 'achievements', name: 'Logros y XP', icon: '🏆' }
-]
+// ========== CONFIGURACIÓN DE RUTAS ==========
+const tabToPath = {
+  scan: 'scan',
+  detail: 'detail',
+  map: 'map',
+  achievements: 'achievements'
+}
+const pathToTab = {
+  scan: 'scan',
+  detail: 'detail',
+  map: 'map',
+  achievements: 'achievements'
+}
+const validTabs = ['scan', 'detail', 'map', 'achievements']
+
+// Sincronizar activeTab con el parámetro de ruta
+watch(() => props.tab, (newTab) => {
+  if (newTab && validTabs.includes(newTab)) {
+    activeTab.value = newTab
+  } else if (newTab && pathToTab[newTab]) {
+    activeTab.value = pathToTab[newTab]
+  } else {
+    activeTab.value = 'scan'
+  }
+}, { immediate: true })
+
+// Navegar cuando se cambia la pestaña desde el menú
+const navegarATab = (tabId) => {
+  const path = tabToPath[tabId]
+  if (path && route.params.tab !== path) {
+    router.push(`/visiting/${path}`)
+  }
+}
 
 // ========== ESCÁNER QR ==========
 const scannedData = ref(null)
@@ -230,7 +259,7 @@ const setArtworkData = (artwork) => {
     style: artwork.style || 'Surrealismo',
     description: artwork.description || 'Esta obra maestra representa una fusión única entre el arte tradicional y las nuevas tecnologías.'
   }
-  activeTab.value = 'detail'
+  navegarATab('detail')
 }
 
 const simulateQRScan = (code, title, isBlurred = false) => {
@@ -280,7 +309,7 @@ const viewRelatedWork = (related) => {
 }
 
 const goToLocation = () => {
-  activeTab.value = 'map'
+  navegarATab('map')
 }
 
 const goToRoom = (roomId) => {
@@ -302,48 +331,50 @@ watch(currentXP, (newXP) => {
     userRanking[userIndex].xp = newXP
   }
 })
+
+// ========== MENU ITEMS ==========
+const menuItems = [
+  { id: 'scan', name: 'Escanear QR/NFC', icon: '📱' },
+  { id: 'detail', name: 'Detalle de obra', icon: '🖼️' },
+  { id: 'map', name: 'Mapa de recorrido', icon: '🗺️' },
+  { id: 'achievements', name: 'Logros y XP', icon: '🏆' }
+]
 </script>
 
 <style scoped>
+/* (Mismos estilos que tenías, sin cambios) */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   background: #f5f7fb;
 }
-
 .content-area {
   padding: 30px;
   width: 100%;
 }
-
 .scan-header {
   margin-bottom: 30px;
 }
-
 .scan-header h3 {
   font-size: 24px;
   color: #2c3e50;
   margin-bottom: 8px;
 }
-
 .scan-header p {
   color: #7f8c8d;
 }
-
 .scanner-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 25px;
   margin-bottom: 30px;
 }
-
 .simulation-buttons {
   display: flex;
   gap: 10px;
   margin-top: 20px;
   justify-content: center;
 }
-
 .simulate-btn {
   padding: 8px 16px;
   border: none;
@@ -353,38 +384,30 @@ watch(currentXP, (newXP) => {
   font-weight: 500;
   transition: all 0.3s;
 }
-
 .simulate-btn.success {
   background: #27ae60;
   color: white;
 }
-
 .simulate-btn.error {
   background: #e74c3c;
   color: white;
 }
-
 .simulate-btn.warning {
   background: #f39c12;
   color: white;
 }
-
 .simulate-btn:hover {
   transform: translateY(-2px);
   opacity: 0.9;
 }
-
-/* Responsive */
 @media (max-width: 768px) {
   .content-area {
     padding: 15px;
   }
-
   .scanner-layout {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-
   .simulation-buttons {
     flex-direction: column;
   }

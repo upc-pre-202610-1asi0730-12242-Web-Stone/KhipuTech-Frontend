@@ -8,10 +8,10 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@iam': path.resolve(__dirname, './src/iam'),
-      '@visitor': path.resolve(__dirname, './src/visitor'),
-      '@private': path.resolve(__dirname, './src/museum'),
-      '@public': path.resolve(__dirname, './src/public'),
-      '@shared': path.resolve(__dirname, './src/shared')
+      '@shared': path.resolve(__dirname, './src/shared'),
+      '@visiting': path.resolve(__dirname, './src/visiting'),
+      '@operation': path.resolve(__dirname, './src/operation'),
+      '@analytics': path.resolve(__dirname, './src/analytics')
     }
   }
 })

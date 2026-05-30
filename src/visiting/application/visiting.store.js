@@ -1,5 +1,5 @@
 ﻿import { defineStore } from 'pinia'
-import { visitorApi } from '../infrastructure/visitor-api'
+import { visitorApi } from '../infrastructure/visiting-api.js'
 import { ArtworkAssembler } from '../infrastructure/artwork.assembler'
 
 export const useVisitorStore = defineStore('visitor', {

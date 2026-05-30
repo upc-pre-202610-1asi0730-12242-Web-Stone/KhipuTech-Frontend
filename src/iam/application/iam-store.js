@@ -16,24 +16,39 @@ export const useIamStore = defineStore('iam', {
             const user = SignInAssembler.toDomain(response)
             this.user = user
             this.isAuthenticated = true
+            localStorage.setItem('access_token', response.token || 'fake-token')
+            localStorage.setItem('user', JSON.stringify(user))
             return user
         },
 
         setVisitorMode(type) {
-            this.user = {
+            let role = 'visitor'
+            let name = 'Visitante'
+            if (type === 'gestor') {
+                role = 'gestor'
+                name = 'Gestor'
+            } else if (type === 'curator') {
+                role = 'curator'
+                name = 'Curador'
+            }
+            const user = {
                 id: 999,
-                name: 'Visitante',
-                email: `visitante@${type}.com`,
-                role: 'visitor',
+                name: name,
+                email: `${type}@ejemplo.com`,
+                role: role,
                 type: type
             }
+            this.user = user
             this.isAuthenticated = true
+            localStorage.setItem('access_token', 'fake-token')
+            localStorage.setItem('user', JSON.stringify(user))
         },
 
         signOut() {
             this.user = null
             this.isAuthenticated = false
             localStorage.removeItem('access_token')
+            localStorage.removeItem('user')
         }
     }
 })
