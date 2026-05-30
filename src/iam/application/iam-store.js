@@ -2,6 +2,8 @@
 import { iamApi } from '../infrastructure/iam-api'
 import { SignInAssembler } from '../infrastructure/sign-in.assembler'
 import { SignInCommand } from '../domain/sign-in.command'
+import { storageService } from '../../shared/infrastructure/storage/storage.service'
+
 
 export const useIamStore = defineStore('iam', {
     state: () => ({
@@ -11,13 +13,11 @@ export const useIamStore = defineStore('iam', {
 
     actions: {
         async signIn(email, password) {
-            const command = new SignInCommand(email, password)
-            const response = await iamApi.signIn(command)
+            const response = await iamApi.signIn({ email, password })
             const user = SignInAssembler.toDomain(response)
             this.user = user
             this.isAuthenticated = true
-            localStorage.setItem('access_token', response.token || 'fake-token')
-            localStorage.setItem('user', JSON.stringify(user))
+            storageService.setSession(response.token, user)
             return user
         },
 
@@ -47,8 +47,7 @@ export const useIamStore = defineStore('iam', {
         signOut() {
             this.user = null
             this.isAuthenticated = false
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('user')
+            storageService.clearSession()
         }
     }
 })

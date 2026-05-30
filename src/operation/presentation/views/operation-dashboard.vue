@@ -52,6 +52,10 @@
           </div>
           <EstadoSensores :sensores="operationStore.sensores" />
         </div>
+        <!-- TAB: MANTENIMIENTO -->
+        <div v-if="activeTab === 'mantenimiento'" class="tab-content">
+          <MaintenanceList />
+        </div>
       </div>
     </template>
   </SharedLayout>
@@ -71,6 +75,7 @@ import ConfigAlertas from '../components/configalertas.vue'
 import ProtocoloEvacuacion from '../components/protocoloevacuacion.vue'
 import ReporteAutoridades from '../components/reporteautoridades.vue'
 import EstadoSensores from '../components/estadosensores.vue'
+import MaintenanceList from '../components/maintenance-list.vue'
 
 const props = defineProps({
   tab: { type: String, default: 'aforo' }
@@ -83,17 +88,18 @@ const route = useRoute()
 const activeTab = ref(props.tab)
 
 // Lista de tabs válidas
-const validTabs = ['aforo', 'alertas', 'defensaCivil']
-// Para la URL usamos nombres en kebab, pero internamente usamos camelCase o como gustes
+const validTabs = ['aforo', 'alertas', 'defensaCivil', 'mantenimiento']
 const tabToPath = {
   aforo: 'aforo',
   alertas: 'alertas',
-  defensaCivil: 'defensa-civil'
+  defensaCivil: 'defensa-civil',
+  mantenimiento: 'mantenimiento'
 }
 const pathToTab = {
   aforo: 'aforo',
   alertas: 'alertas',
-  'defensa-civil': 'defensaCivil'
+  'defensa-civil': 'defensaCivil',
+  'mantenimiento': 'mantenimiento'
 }
 
 // Sincronizar activeTab con el parámetro de ruta
@@ -140,7 +146,8 @@ const enviarReporte = () => alert('Reporte enviado')
 const menuItems = [
   { id: 'aforo', name: 'Control de aforo', icon: '🚪' },
   { id: 'alertas', name: 'Alertas', icon: '⚠️' },
-  { id: 'defensaCivil', name: 'Defensa Civil', icon: '🛡️' }
+  { id: 'defensaCivil', name: 'Defensa Civil', icon: '🛡️' },
+  { id: 'mantenimiento', name: 'Mantenimiento', icon: '🔧' }   // nuevo
 ]
 </script>
 
