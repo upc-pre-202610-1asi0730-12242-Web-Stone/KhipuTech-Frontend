@@ -3,7 +3,6 @@ import { endpoints } from '../../shared/infrastructure/http/endpoints'
 
 export const visitingApi = {
     async scanQR(code) {
-        // Si estamos en modo mock sin backend real, devolver datos simulados
         if (import.meta.env.VITE_USE_MOCK === 'true' && !import.meta.env.VITE_API_BASE_URL) {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -53,6 +52,6 @@ export const visitingApi = {
     },
 
     async getRanking(period) {
-        // Logica
+
     }
 }

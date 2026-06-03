@@ -61,7 +61,6 @@ export const useVisitingStore = defineStore('visiting', {
         },
 
         checkAchievements() {
-            // Lógica para verificar logros según scannedArtworks.length, currentXP, etc.
         },
 
         async getRanking(period) {

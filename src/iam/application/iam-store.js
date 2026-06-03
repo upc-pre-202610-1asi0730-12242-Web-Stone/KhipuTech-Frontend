@@ -22,28 +22,42 @@ export const useIamStore = defineStore('iam', {
         },
 
         setVisitorMode(type) {
-            let role = 'visitor'
-            let name = 'Visitante'
-            if (type === 'gestor') {
-                role = 'gestor'
-                name = 'Gestor'
-            } else if (type === 'curator') {
-                role = 'curator'
-                name = 'Curador'
+            let permissions = []
+            let role = ''
+            let name = ''
+            switch (type) {
+                case 'public':
+                    role = 'public'
+                    name = 'Visitante'
+                    permissions = []
+                    break
+                case 'gestor':
+                    role = 'gestor'
+                    name = 'Gestor'
+                    permissions = ['capacity', 'operation', 'maintenance']
+                    break
+                case 'curator':
+                    role = 'curator'
+                    name = 'Curador'
+                    permissions = ['analytics']
+                    break
+                default:
+                    role = 'public'
+                    name = 'Visitante'
+                    permissions = []
             }
             const user = {
                 id: 999,
                 name: name,
                 email: `${type}@ejemplo.com`,
-                role: role,
-                type: type
+                role: type,
+                type: type,
+                permissions: permissions
             }
             this.user = user
             this.isAuthenticated = true
-            localStorage.setItem('access_token', 'fake-token')
-            localStorage.setItem('user', JSON.stringify(user))
+            storageService.setSession('fake-token', user)
         },
-
         signOut() {
             this.user = null
             this.isAuthenticated = false
