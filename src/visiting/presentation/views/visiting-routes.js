@@ -6,6 +6,6 @@ export default [
         name: 'visiting',
         component: VisitingDashboard,
         props: true,
-        meta: { requiresAuth: true, roles: ['public', 'visitor'] }
+        meta: { requiresAuth: true, roles: ['public'] }
     }
 ]

@@ -4,7 +4,7 @@
         this.email = email
         this.name = name
         this.role = role
-        this.type = type  // 'visiting', 'gestor', 'public'
+        this.type = type
         this.createdAt = new Date()
     }
 

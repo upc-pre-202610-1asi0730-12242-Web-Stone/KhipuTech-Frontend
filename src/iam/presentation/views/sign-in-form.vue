@@ -82,15 +82,19 @@ const iamStore = useIamStore()
 const handleLogin = async () => {
   await iamStore.signIn(email.value, password.value)
   const user = iamStore.user
-  if (user?.type === 'gestor') router.push('/operation/aforo')
-  else if (user?.type === 'curator') router.push('/analytics/dashboard')
-  else router.push('/visiting/scan')
+  if (user?.type === 'gestor') {
+    router.push('/manager/capacity/rooms')
+  } else if (user?.type === 'curator') {
+    router.push('/analytics/dashboard')
+  } else {
+    router.push('/visiting/scan')
+  }
 }
 
 const enterAsRole = (type) => {
   iamStore.setVisitorMode(type)
   if (type === 'gestor') {
-    router.push('/operation/aforo')
+    router.push('/manager/capacity/rooms')
   } else if (type === 'curator') {
     router.push('/analytics/dashboard')
   } else {
