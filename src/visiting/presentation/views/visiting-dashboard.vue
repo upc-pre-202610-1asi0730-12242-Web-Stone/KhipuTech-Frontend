@@ -3,7 +3,7 @@
     <SharedLayout
         :menu-items="menuItems"
         :current-tab="activeTab"
-        @update:tab="navegarATab"
+        @update:tab="activeTab = $event"
         @logout="handleLogout"
     >
       <template #content>
@@ -15,6 +15,7 @@
               <p>Coloca el código QR frente a la cámara</p>
             </div>
 
+            <!-- Layout de dos columnas para el escáner -->
             <div class="scanner-layout">
               <QRScanner
                   :scanned-data="scannedData"
@@ -27,11 +28,13 @@
               />
             </div>
 
+            <!-- Búsqueda manual -->
             <ManualCodeSearch
                 v-model:code="manualCode"
                 @search="searchCode"
             />
 
+            <!-- Botones de simulación (solo desarrollo) -->
             <div class="simulation-buttons">
               <button @click="simulateQRScan('KH-2025-001', 'La persistencia de la memoria')" class="simulate-btn success">
                 Simular QR Válido
@@ -58,6 +61,7 @@
 
           <!-- Tab: Mapa de recorrido -->
           <div v-if="activeTab === 'map'" class="tab-content">
+
             <MuseumMap
                 :rooms="museumRooms"
                 :current-room="currentRoom"
@@ -67,7 +71,49 @@
                 :artworks-found="artworksFound"
                 @go-to-room="goToRoom"
             />
+
+            <!-- Recomendaciones -->
+            <div class="recommendations-section">
+              <div class="recommendations-header">
+                <h3>✨ En base a tus obras favoritas</h3>
+                <p>Recorridos recomendados para ti</p>
+              </div>
+
+              <div class="recommendations-grid">
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">🎨</div>
+                  <h4>Ruta Arte Moderno</h4>
+                  <p>Explora obras contemporáneas.</p>
+                  <button class="recommendation-btn" @click="router.push('/recorrido/moderno')">
+                    Ver recorrido
+                  </button>
+                </div>
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">🏺</div>
+                  <h4>Ruta Clásica</h4>
+                  <p>Descubre las piezas históricas más destacadas del museo.</p>
+                  <button class="recommendation-btn" @click="router.push('/recorrido/clasica')">
+                    Ver recorrido
+                  </button>
+                </div>
+
+                <div class="recommendation-card">
+                  <div class="recommendation-icon">☕</div>
+                  <h4>Ruta Relax</h4>
+                  <p>Un recorrido tranquilo.</p>
+                  <button class="recommendation-btn" @click="router.push('/recorrido/relax')">
+                    Ver recorrido
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
           </div>
+
+
 
           <!-- Tab: Logros y XP -->
           <div v-if="activeTab === 'achievements'" class="tab-content">
@@ -96,7 +142,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useIamStore } from '../../../iam/application/iam-store.js'
 import SharedLayout from '../../../shared/presentation/components/layout.vue'
 import QRScanner from '../components/qrscanner.vue'
@@ -107,50 +153,18 @@ import MuseumMap from '../components/museummap.vue'
 import AchievementsPanel from '../components/achievementspanel.vue'
 import RankingPanel from '../components/rankingpanel.vue'
 
-const props = defineProps({
-  tab: { type: String, default: 'scan' }
-})
-
 const iamStore = useIamStore()
 const router = useRouter()
-const route = useRoute()
-const activeTab = ref(props.tab)
+const activeTab = ref('scan')
 const manualCode = ref('')
 const user = computed(() => iamStore.user)
 
-// ========== CONFIGURACIÓN DE RUTAS ==========
-const tabToPath = {
-  scan: 'scan',
-  detail: 'detail',
-  map: 'map',
-  achievements: 'achievements'
-}
-const pathToTab = {
-  scan: 'scan',
-  detail: 'detail',
-  map: 'map',
-  achievements: 'achievements'
-}
-const validTabs = ['scan', 'detail', 'map', 'achievements']
-
-// Sincronizar activeTab con el parámetro de ruta
-watch(() => props.tab, (newTab) => {
-  if (newTab && validTabs.includes(newTab)) {
-    activeTab.value = newTab
-  } else if (newTab && pathToTab[newTab]) {
-    activeTab.value = pathToTab[newTab]
-  } else {
-    activeTab.value = 'scan'
-  }
-}, { immediate: true })
-
-// Navegar cuando se cambia la pestaña desde el menú
-const navegarATab = (tabId) => {
-  const path = tabToPath[tabId]
-  if (path && route.params.tab !== path) {
-    router.push(`/visiting/${path}`)
-  }
-}
+const menuItems = [
+  { id: 'scan', name: 'Escanear QR/NFC', icon: '📱' },
+  { id: 'detail', name: 'Detalle de obra', icon: '🖼️' },
+  { id: 'map', name: 'Mapa de recorrido', icon: '🗺️' },
+  { id: 'achievements', name: 'Logros y XP', icon: '🏆' }
+]
 
 // ========== ESCÁNER QR ==========
 const scannedData = ref(null)
@@ -259,7 +273,7 @@ const setArtworkData = (artwork) => {
     style: artwork.style || 'Surrealismo',
     description: artwork.description || 'Esta obra maestra representa una fusión única entre el arte tradicional y las nuevas tecnologías.'
   }
-  navegarATab('detail')
+  activeTab.value = 'detail'
 }
 
 const simulateQRScan = (code, title, isBlurred = false) => {
@@ -309,7 +323,7 @@ const viewRelatedWork = (related) => {
 }
 
 const goToLocation = () => {
-  navegarATab('map')
+  activeTab.value = 'map'
 }
 
 const goToRoom = (roomId) => {
@@ -331,50 +345,106 @@ watch(currentXP, (newXP) => {
     userRanking[userIndex].xp = newXP
   }
 })
-
-// ========== MENU ITEMS ==========
-const menuItems = [
-  { id: 'scan', name: 'Escanear QR/NFC', icon: '📱' },
-  { id: 'detail', name: 'Detalle de obra', icon: '🖼️' },
-  { id: 'map', name: 'Mapa de recorrido', icon: '🗺️' },
-  { id: 'achievements', name: 'Logros y XP', icon: '🏆' }
-]
 </script>
 
 <style scoped>
-/* (Mismos estilos que tenías, sin cambios) */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   background: #f5f7fb;
 }
+
 .content-area {
   padding: 30px;
   width: 100%;
 }
+.recommendations-section {
+  margin-top: 55px;
+}
+
+.recommendations-header h3 {
+  font-size: 28px;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.recommendations-header p {
+  font-size: 18px;
+  color: #64748b;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.recommendation-card {
+  min-height: 210px;
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.recommendation-icon {
+  font-size: 36px;
+  margin-bottom: 32px;
+}
+
+.recommendation-card h4 {
+  font-size: 22px;
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.recommendation-card p {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 26px;
+  line-height: 1.5;
+}
+
+.recommendation-btn {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+}
+
 .scan-header {
   margin-bottom: 30px;
 }
+
 .scan-header h3 {
   font-size: 24px;
   color: #2c3e50;
   margin-bottom: 8px;
 }
+
 .scan-header p {
   color: #7f8c8d;
 }
+
 .scanner-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 25px;
   margin-bottom: 30px;
 }
+
 .simulation-buttons {
   display: flex;
   gap: 10px;
   margin-top: 20px;
   justify-content: center;
 }
+
 .simulate-btn {
   padding: 8px 16px;
   border: none;
@@ -384,30 +454,38 @@ const menuItems = [
   font-weight: 500;
   transition: all 0.3s;
 }
+
 .simulate-btn.success {
   background: #27ae60;
   color: white;
 }
+
 .simulate-btn.error {
   background: #e74c3c;
   color: white;
 }
+
 .simulate-btn.warning {
   background: #f39c12;
   color: white;
 }
+
 .simulate-btn:hover {
   transform: translateY(-2px);
   opacity: 0.9;
 }
+
+/* Responsive */
 @media (max-width: 768px) {
   .content-area {
     padding: 15px;
   }
+
   .scanner-layout {
     grid-template-columns: 1fr;
     gap: 15px;
   }
+
   .simulation-buttons {
     flex-direction: column;
   }

@@ -2,8 +2,38 @@ import { httpClient } from '../../shared/infrastructure/http/http-client'
 import { endpoints } from '../../shared/infrastructure/http/endpoints'
 
 export const visitingApi = {
+
+    async getArtworkByQrId(qrId) {
+        const response = await httpClient.get(`/artifacts/${qrId}`)
+        return response.data
+    },
+
+    async registerInteraction(resource) {
+        const response = await httpClient.post('/artwork-interactions', resource)
+        return response.data
+    },
+
+    async registerVisitHistory(resource) {
+        const response = await httpClient.post('/visit-history', resource)
+        return response.data
+    },
+
+    async addFavorite(resource) {
+        const response = await httpClient.post('/favorites', resource)
+        return response.data
+    },
+
+    async deleteFavorite(id) {
+        const response = await httpClient.delete(`/favorites/${id}`)
+        return response.data
+    },
+
+    async getFavorites(sessionId) {
+        const response = await httpClient.get(`/favorites?sessionId=${sessionId}`)
+        return response.data
+    },
+
     async scanQR(code) {
-        // Si estamos en modo mock sin backend real, devolver datos simulados
         if (import.meta.env.VITE_USE_MOCK === 'true' && !import.meta.env.VITE_API_BASE_URL) {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -18,27 +48,11 @@ export const visitingApi = {
                             description: '...',
                             maintenanceBlocked: false,
                             needsMaintenance: false
-                        },
-                        'MOMA-001': {
-                            id: 2,
-                            code: 'MOMA-001',
-                            title: 'La noche estrellada',
-                            artist: 'Van Gogh',
-                            year: '1889',
-                            maintenanceBlocked: false,
-                            needsMaintenance: true
-                        },
-                        'BLOCKED-001': {
-                            id: 3,
-                            code: 'BLOCKED-001',
-                            title: 'Obra en mantenimiento',
-                            artist: 'Desconocido',
-                            year: '2024',
-                            maintenanceBlocked: true,
-                            needsMaintenance: false
                         }
                     }
+
                     const artwork = validCodes[code]
+
                     if (artwork) {
                         resolve(artwork)
                     } else {
